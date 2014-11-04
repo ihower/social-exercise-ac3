@@ -10,4 +10,28 @@ class User < ActiveRecord::Base
     user
   end
 
+  def fb_posts
+    conn = Faraday.new(:url => 'https://graph.facebook.com')
+    response = conn.get "/#{self.fb_uid}/posts", { :access_token => self.fb_token }
+    JSON.parse(response.body)
+  end
+
+  def fb_photos
+    conn = Faraday.new(:url => 'https://graph.facebook.com')
+    response = conn.get "/#{self.fb_uid}/photos", { :access_token => self.fb_token }
+    JSON.parse(response.body)
+  end
+
+  def fb_posts_location
+    conn = Faraday.new(:url => 'https://graph.facebook.com')
+    response = conn.get "/#{self.fb_uid}/posts", { :access_token => self.fb_token, :with => "location" }
+    JSON.parse(response.body)
+  end
+
+  def fb_post!(message)
+    conn = Faraday.new(:url => 'https://graph.facebook.com')
+    response = conn.post "/me/feed", { :message => message, :access_token => self.fb_token }
+    JSON.parse(response.body)
+  end
+
 end

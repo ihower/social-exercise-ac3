@@ -4,6 +4,15 @@
   <%= current_user.email %>
 
   <%= link_to "Logout", auth_signout_path, :method => :delete %>
+
+  <%= debug(current_user.fb_posts_location) %>
+
+  <% current_user.fb_photos["data"].each do |post| %>
+    <% post["images"].each do |image| %>
+      <%= image_tag image["source"] %>
+    <% end %>
+  <% end %>
+
 <% else %>
   <%= link_to "Facebook 登入", "/auth/facebook" %>
 <% end %>
