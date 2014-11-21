@@ -1,19 +1,23 @@
+<h2>Photos</h2>
+
 <% if current_user %>
-
-  Hi, <%= current_user.name %>
-  <%= current_user.email %>
-
-  <%= link_to "Logout", auth_signout_path, :method => :delete %>
-
-  <%= debug(current_user.fb_posts_location) %>
-
-  <% current_user.fb_photos["data"].each do |post| %>
-    <% post["images"].each do |image| %>
-      <%= image_tag image["source"] %>
-    <% end %>
+  <%= form_for Photo.new, :url => photos_path, :html => { :multipart => true } do |f| %>
+   <%= f.file_field :image %>
+   <%= f.text_field :description %>
+   <%= f.submit %>
   <% end %>
-
-<% else %>
-  <%= link_to "Facebook 登入", "/auth/facebook" %>
 <% end %>
+
+<ul>
+<% @photos.each do |p| %>
+<li>
+  <%= link_to image_tag( p.image.url(:thumb) ), p.image.url %>
+  <%= p.description %>
+  <%= p.user.name %>
+  <%= link_to "Delete", photo_path(p), :method => :delete %>
+</li>
+<% end %>
+</ul>
+
+<%= paginate @photos %>
 

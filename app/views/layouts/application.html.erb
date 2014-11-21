@@ -8,6 +8,16 @@
 </head>
 <body>
 
+<%= flash[:notice] %>
+<%= flash[:alert] %>
+
+<% if current_user %>
+  Hi, <%= current_user.name %>
+  <%= link_to "Logout", auth_signout_path, :method => :delete %>
+<% else %>
+  <%= link_to "Facebook 登入", "/auth/facebook" %>
+<% end %>
+
 <%= yield %>
 
 </body>

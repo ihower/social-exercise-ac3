@@ -7,6 +7,13 @@ class ApplicationController < ActionController::Base
 
   protected
 
+  def require_login
+    unless current_user
+      flash[:alert] = "Login Required"
+      redirect_to root_path
+    end
+  end
+
   def current_user
     User.find( session[:user_id] ) if session[:user_id]
   end
