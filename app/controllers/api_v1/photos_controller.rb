@@ -1,4 +1,6 @@
-class ApiV1::PhotosController < ApplicationController
+class ApiV1::PhotosController < ApiController
+
+  before_action :require_login
 
   def index
     @photos = Photo.page( params[:page] ).per(1)
