@@ -1,0 +1,64 @@
+<h1><%= @user.name %></h1>
+
+<% if @user != current_user %>
+  <p>Status:
+
+    <% if current_user.is_friend?(@user) %>
+      已經是朋友
+    <% elsif current_user.pending_friendship?(@user) %>
+      等待對方確認 [Remove]
+    <% elsif current_user.inverse_pending_friendship?(@user) %>
+      交友邀請中 [Confirm] [Ignore]
+    <% elsif current_user.ignored_friendship?(@user) %>
+      等待對方確認 [Remove] <- 安慰版!!
+    <% elsif current_user.inverse_ignored_friendship?(@user) %>
+      已被我忽略 [Confirm]
+    <% else %>
+      目前沒關係 <%= link_to "Request", friendships_path( :friend_id => @user), :method => :post %>
+    <% end %>
+
+  </p>
+<% end %>
+
+<h2>All friend list</h2>
+<ul>
+  <% @user.all_friends.each do |f| %>
+    <li>
+      <%= link_to f.name, user_path(f) %>
+
+      <% if current_user == @user %>
+        <% fs = current_user.find_friendship(f) %>
+        <%= link_to "Remove", friendship_path(fs), :method => :delete, :data => { :confirm => "Are you sure?" } %>
+      <% end %>
+
+    </li>
+  <% end %>
+</ul>
+
+<% if @user == current_user %>
+
+  <h2>Request list</h2>
+    <ul>
+    <% @user.friendships.pending.each do |f| %>
+     <li>
+        <%= link_to f.friend.name, user_path(f.friend) %>
+        <%= link_to "Remove", friendship_path(f), :method => :delete, :data => { :confirm => "Are you sure?" } %>
+      </li>
+    <% end %>
+    </ul>
+
+
+  <h2>Pending list</h2>
+
+    <ul>
+    <% @user.inverse_friendships.pending.each do |f| %>
+     <li>
+        <%= link_to f.user.name, user_path(f.user) %>
+        <%= link_to "Confirm", friendship_path(f, :status => :confirmed), :method => :patch %>
+
+        <%= link_to "Ignore", friendship_path(f, :status => :ignored), :method => :patch %>
+      </li>
+    <% end %>
+    </ul>
+
+<% end %>

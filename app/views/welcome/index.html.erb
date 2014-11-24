@@ -13,7 +13,7 @@
 <li>
   <%= link_to image_tag( p.image.url(:thumb) ), p.image.url %>
   <%= p.description %>
-  <%= p.user.name %>
+  <%= link_to p.user.name, user_path(p.user) %>
   <%= link_to "Delete", photo_path(p), :method => :delete %>
 </li>
 <% end %>

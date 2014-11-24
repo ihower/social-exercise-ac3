@@ -4,6 +4,11 @@ Rails.application.routes.draw do
   get '/auth/failure', to: 'sessions#failure'
   delete '/auth/signout', to: 'sessions#destroy'
 
+  get '/switch' => 'users#switch'
+
+  resources :users
+  resources :friendships
+
   resources :photos
 
   # The priority is based upon order of creation: first created -> highest priority.
