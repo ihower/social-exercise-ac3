@@ -11,6 +11,13 @@ Rails.application.routes.draw do
 
   resources :photos
 
+
+  scope :path => '/api/v1/', :module => "api_v1", :defaults => { :format => :json }, :as => 'v1' do
+
+    resources :photos
+
+  end
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
