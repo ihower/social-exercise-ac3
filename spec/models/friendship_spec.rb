@@ -67,7 +67,7 @@ RSpec.describe Friendship, :type => :model do
 
     it "should return true if pending" do
       Friendship.create!( :user => @user2, :friend => @user1 )
-      expect(@user1.inverse_pending_friendship?(@user2)).to eq(false)
+      expect(@user1.inverse_pending_friendship?(@user2)).to eq(true)
     end
   end
 
